@@ -16,6 +16,9 @@
 
 set -eu
 
+cp cliaas/cliaas-linux /usr/local/bin
+chmod +x /usr/local/bin/cliaas
+
 VHD_IMAGE_URL=$(grep ${AZURE_REGION} pivnet-opsmgr/*Azure.yml | awk '{split($0, a); print a[2]}')
 if [[ -z $VHD_IMAGE_URL ]]; then
   VHD_IMAGE_URL=$(grep vhd pivnet-opsmgr/*Azure.yml | head -n1 | awk '{split($0, a); print a[2]}')
@@ -32,4 +35,8 @@ azure:
   storage_account_name: ${AZURE_STORAGE_ACCOUNT_NAME}
   storage_account_key: ${AZURE_STORAGE_ACCOUNT_KEY}
   storage_container_name: ${AZURE_STORAGE_CONTAINER_NAME}
+  managed_disks: ${AZURE_MANAGED_DISKS}
+  storage_account_type: ${AZURE_STORAGE_ACCOUNT_TYPE}
+  
+
 EOF

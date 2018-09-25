@@ -20,6 +20,13 @@ resource_types:
     tag: latest-final
 
 resources:
+- name: cliaas
+  type: github-release
+  source:
+    user: svrc-pivotal
+    repository: cliaas
+    access_token: {{github_token}}
+
 - name: pivnet-opsmgr
   type: pivnet
   source:
@@ -56,6 +63,8 @@ jobs:
   serial: true
   plan:
   - aggregate:
+    - get: cliaas
+      params: {globs: ["*linux*"]}
     - get: pivnet-opsmgr
       passed: [regulator]
       trigger: true
@@ -100,6 +109,8 @@ jobs:
         AZURE_CLIENT_ID: {{azure_client_id}}
         AZURE_CLIENT_SECRET: {{azure_client_secret}}
         AZURE_TENANT_ID: {{azure_tenant_id}}
+        AZURE_MANAGED_DISKS: {{azure_managed_disks}}
+        AZURE_STORAGE_ACCOUNT_TYPE: {{azure_storage_account_type}}
         AZURE_RESOURCE_GROUP_NAME: {{azure_resource_group_name}}
         AZURE_STORAGE_ACCOUNT_NAME: {{azure_storage_account_name}}
         AZURE_STORAGE_ACCOUNT_KEY: {{azure_storage_account_key}}
